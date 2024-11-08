@@ -19,12 +19,16 @@ data "aws_ami" "debian" {
     }
 }
 
-output "ami_id" {
-    value = data.aws_ami.debian.id
+# Variables
+variable "instance_count" {
+  description = "Nombre d'instances à créer"
+  type        = number
+  default     = 2
 }
 
 # Instance Configuration
 resource "aws_instance" "zookeeper_kafka" {
+  count = var.instance_count
   ami           = data.aws_ami.debian.id
   instance_type = "t3.small"
   subnet_id              = aws_subnet.public.id
@@ -38,24 +42,28 @@ resource "aws_instance" "zookeeper_kafka" {
     delete_on_termination = true
     
     tags = {
-      Name = "zookeeper-kafka-root-volume-1"
+      Name = "zookeeper-kafka-root-volume-${count.index + 1}"
     }
   }
 
   tags = {
-    Name = "zookeeper-kafka-instance-1"
+    Name = "zookeeper-kafka-instance-${count.index + 1}"
   }
 }
 
 # Elastic IP
 resource "aws_eip" "zookeeper_kafka_ip" {
-  instance = aws_instance.zookeeper_kafka.id
+  count = var.instance_count
+  instance = aws_instance.zookeeper_kafka[count.index].id
 
   tags = {
-    Name = "zookeeper-kafka-eip"
+    Name = "zookeeper-kafka-eip-${count.index + 1}"
   }
 }
 
 output "elastic_ip" {
-  value = aws_eip.zookeeper_kafka_ip.public_dns
+  value = {
+    for idx in range(var.instance_count):
+      "instance_${idx + 1}" => aws_eip.zookeeper_kafka_ip[idx].public_dns
+  }
 }

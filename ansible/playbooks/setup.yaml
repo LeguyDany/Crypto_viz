@@ -1,4 +1,4 @@
-- name: Setup Zookeeper
+- name: Setup Zookeeper and Kafka
   hosts: main
   become: yes
   vars:
@@ -8,3 +8,4 @@
     - ../secrets.yaml
   roles:
     - ../roles/zookeeper
+    - ../roles/kafka
