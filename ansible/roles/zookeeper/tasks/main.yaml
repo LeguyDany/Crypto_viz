@@ -1,0 +1,53 @@
+- name: Update
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install sudo, unzip, curl, vim and git
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unzip
+    - curl
+    - wget
+    - git
+    - vim
+    - tree
+    - default-jre
+
+- name: Download Zookeeper
+  get_url:
+    url: "https://dlcdn.apache.org/zookeeper/zookeeper-3.9.3/apache-zookeeper-3.9.3-bin.tar.gz"
+    dest: "/home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"
+
+- name: Create Zookeeper directory
+  ansible.builtin.file:
+    path: "/home/{{ user }}/zookeeper"
+    state: directory
+
+- name: Unzip Zookeeper
+  unarchive:
+    src: "/home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"
+    dest: "/home/{{ user }}/zookeeper"
+    remote_src: yes
+
+- name: Give Zookeeper permissions
+  command: "chown -R {{ user }}:{{ user }} /home/{{ user }}/zookeeper"
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: "/home/{{ user }}/zookeeper/data"
+    state: directory
+
+- name: Change ownership of data directory
+  command: "chown -R {{ user }}:{{ user }} /home/{{ user }}/zookeeper/data"
+
+- name: Create Zookeeper configuration file
+  ansible.builtin.template:
+    src: zookeeper_config.cfg
+    dest: "/home/{{ user }}/zookeeper/apache-zookeeper-3.9.3-bin/conf/zoo.cfg"
+    # mode: "0755"
+
+- name: Clean the downloaded file
+  command: "rm /home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"

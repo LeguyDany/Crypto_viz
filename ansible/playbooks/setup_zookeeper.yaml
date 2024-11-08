@@ -1,0 +1,10 @@
+- name: Setup Zookeeper
+  hosts: main
+  become: yes
+  vars:
+    sudoer_name: "{{ user }}"
+    setup_path: "/home/{{ user }}"
+  vars_files:
+    - ../secrets.yaml
+  roles:
+    - ../roles/zookeeper
