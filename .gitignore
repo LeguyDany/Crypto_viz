@@ -1,2 +1,11 @@
+.env
+
+# Ansible
 zookeeper-kafka-1.pem
 vault_pass.txt
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
