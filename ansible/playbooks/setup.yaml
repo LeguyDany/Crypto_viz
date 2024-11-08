@@ -1,5 +1,5 @@
 - name: Setup Zookeeper and Kafka
-  hosts: main
+  hosts: vm1, vm2
   become: yes
   vars:
     sudoer_name: "{{ user }}"

@@ -2,7 +2,7 @@
 
 ## Credentials
 
-Follow these commands:
+Execute these commands:
 
 ```sh
     mkdir ~/.aws
