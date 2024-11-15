@@ -1,20 +1,33 @@
-- name: Update
-  apt:
-    update_cache: yes
-    upgrade: yes
+# - name: Update
+#   apt:
+#     update_cache: yes
+#     upgrade: yes
 
-- name: Install sudo, unzip, curl, vim and git
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - unzip
-    - curl
-    - wget
-    - git
-    - vim
-    - tree
-    - default-jre
+# - name: Install sudo, unzip, curl, vim and git
+#   package:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - unzip
+#     - curl
+#     - wget
+#     - net-tools
+#     - git
+#     - vim
+#     - tree
+#     - lsof
+#     - default-jre
+#     - iptables
+#     - iptables-persistent
+
+- name: Create an iptable config file
+  ansible.builtin.template:
+    src: iptables.rules
+    dest: "/etc/iptables.rules"
+    # mode: "0755"
+  
+- name: Apply the iptables rules
+  ansible.builtin.shell: "iptables-restore < /etc/iptables.rules"
 
 - name: Download Zookeeper
   get_url:
@@ -51,3 +64,8 @@
 
 - name: Clean the downloaded file
   command: "rm /home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"
+
+- name: Create myid file
+  shell: |
+    touch /home/{{ user }}/zookeeper/data/myid
+    echo "1" > /home/{{ user }}/zookeeper/data/myid
