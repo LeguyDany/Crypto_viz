@@ -4,8 +4,8 @@
   vars:
     sudoer_name: "{{ user }}"
     setup_path: "/home/{{ user }}"
-    vm1_private_ip: "10.0.1.110"
-    vm2_private_ip: "10.0.1.140"
+    vm1_private_ip: "10.0.1.126"
+    vm2_private_ip: "10.0.1.109"
   vars_files:
     - ../secrets.yaml
   roles:

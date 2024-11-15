@@ -1,24 +1,26 @@
-# - name: Update
-#   apt:
-#     update_cache: yes
-#     upgrade: yes
+- name: Update
+  apt:
+    update_cache: yes
+    upgrade: yes
 
-# - name: Install sudo, unzip, curl, vim and git
-#   package:
-#     name: "{{ item }}"
-#     state: present
-#   loop:
-#     - unzip
-#     - curl
-#     - wget
-#     - net-tools
-#     - git
-#     - vim
-#     - tree
-#     - lsof
-#     - default-jre
-#     - iptables
-#     - iptables-persistent
+- name: Install sudo, unzip, curl, vim and git
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unzip
+    - curl
+    - wget
+    - net-tools
+    - git
+    - vim
+    - tree
+    - lsof
+    - default-jre
+    - netcat-traditional
+    - telnet
+    - iptables
+    - iptables-persistent
 
 - name: Create an iptable config file
   ansible.builtin.template:
@@ -62,10 +64,16 @@
     dest: "/home/{{ user }}/zookeeper/apache-zookeeper-3.9.3-bin/conf/zoo.cfg"
     # mode: "0755"
 
-- name: Clean the downloaded file
-  command: "rm /home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"
-
 - name: Create myid file
   shell: |
     touch /home/{{ user }}/zookeeper/data/myid
-    echo "1" > /home/{{ user }}/zookeeper/data/myid
+    private_ip=$(hostname -I | awk '{print $1}')
+
+    if [ "$private_ip" = "{{vm1_private_ip}}" ]; then 
+      echo "1" > /home/{{ user }}/zookeeper/data/myid
+    else
+      echo "2" > /home/{{ user }}/zookeeper/data/myid
+    fi
+
+- name: Cleanup
+  ansible.builtin.shell: "rm -rf /home/{{ user }}/apache-zookeeper-3.9.3-bin.tar.gz"
