@@ -11,6 +11,15 @@ resource "aws_security_group" "zookeeper_kafka_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # IMCP pings
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["10.0.1.0/24"]
+  }
+
+
   # === SSH ===
   ingress {
     from_port   = 22
@@ -38,6 +47,14 @@ resource "aws_security_group" "zookeeper_kafka_sg" {
   ingress {
     from_port   = 2888
     to_port     = 2888
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  
+  }
+
+  # === Kafka ===
+  ingress {
+    from_port   = 9092 
+    to_port     = 9092
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  
   }

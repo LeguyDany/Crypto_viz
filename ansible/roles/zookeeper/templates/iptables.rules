@@ -9,9 +9,9 @@
 # Allow traffic from the 10.0.1.0/24 subnet
 -4 -A INPUT -s 10.0.1.0/24 ! -i lo -j ACCEPT
 
-# Allow DNS, HTTP, HTTPS and Zookeeper connections
--A INPUT -p udp --match multiport --dports 53,80,443,2181,2888,3888 -j ACCEPT
--A INPUT -p tcp --match multiport --dports 53,80,443,2181,2888,3888 -j ACCEPT
+# Allow DNS, HTTP, HTTPS, Zookeeper, Kafka connections
+-A INPUT -p udp --match multiport --dports 53,80,443,2181,2888,3888,9092 -j ACCEPT
+-A INPUT -p tcp --match multiport --dports 53,80,443,2181,2888,3888,9092 -j ACCEPT
 
 # Allow ping
 -A INPUT -p icmp -j ACCEPT

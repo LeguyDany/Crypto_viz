@@ -4,10 +4,10 @@
   vars:
     sudoer_name: "{{ user }}"
     setup_path: "/home/{{ user }}"
-    vm1_private_ip: "10.0.1.126"
-    vm2_private_ip: "10.0.1.109"
-    vm1_public_ip: "ec2-15-188-180-21.eu-west-3.compute.amazonaws.com"
-    vm2_public_ip: "ec2-15-237-91-171.eu-west-3.compute.amazonaws.com"
+    vm1_private_ip: "10.0.1.144"
+    vm2_private_ip: "10.0.1.66"
+    vm1_public_ip: "ec2-13-36-21-103.eu-west-3.compute.amazonaws.com"
+    vm2_public_ip: "ec2-52-47-140-86.eu-west-3.compute.amazonaws.com"
   vars_files:
     - ../secrets.yaml
   roles:

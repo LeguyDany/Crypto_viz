@@ -67,3 +67,9 @@ output "elastic_ip" {
       "instance_${idx + 1}" => aws_eip.zookeeper_kafka_ip[idx].public_dns
   }
 }
+output "instance_private_ips" {
+  value = {
+    for idx in range(var.instance_count):
+      "instance_${idx + 1}" => aws_eip.zookeeper_kafka_ip[idx].private_ip
+  }
+}

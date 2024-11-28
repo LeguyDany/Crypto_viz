@@ -1,38 +1,38 @@
-# - name: Download Apache Kafka
-#   get_url:
-#     url: "https://downloads.apache.org/kafka/3.9.0/kafka_2.13-3.9.0.tgz"
-#     dest: "/home/{{ user }}/kafka_2.13-3.9.0.tgz"
+- name: Download Apache Kafka
+  get_url:
+    url: "https://downloads.apache.org/kafka/3.9.0/kafka_2.13-3.9.0.tgz"
+    dest: "/home/{{ user }}/kafka_2.13-3.9.0.tgz"
 
-# - name: Create Kafka directory
-#   ansible.builtin.file:
-#     path: "/home/{{ user }}/kafka"
-#     state: directory
+- name: Create Kafka directory
+  ansible.builtin.file:
+    path: "/home/{{ user }}/kafka"
+    state: directory
   
-# - name: Unzip Kafka
-#   unarchive:
-#     src: "/home/{{ user }}/kafka_2.13-3.9.0.tgz"
-#     dest: "/home/{{ user }}/kafka/"
-#     remote_src: yes
+- name: Unzip Kafka
+  unarchive:
+    src: "/home/{{ user }}/kafka_2.13-3.9.0.tgz"
+    dest: "/home/{{ user }}/kafka/"
+    remote_src: yes
 
-# - name: Give Kafka permissions
-#   command: "chown -R {{ user }}:{{ user }} /home/{{ user }}/kafka"
+- name: Give Kafka permissions
+  command: "chown -R {{ user }}:{{ user }} /home/{{ user }}/kafka"
 
-# - name: Create Kafka configuration file
-#   ansible.builtin.template:
-#     src: kafka_config.cfg
-#     dest: "/home/{{ user }}/kafka/kafka_2.13-3.9.0/config/server.properties"
-#     # mode: "0755"
+- name: Create Kafka configuration file
+  ansible.builtin.template:
+    src: kafka_config.cfg
+    dest: "/home/{{ user }}/kafka/kafka_2.13-3.9.0/config/server.properties"
+    # mode: "0755"
 
-# - name: Create running file
-#   ansible.builtin.template:
-#     src: start_server.sh
-#     dest: "/home/{{ user }}/start_server.sh"
+- name: Create running file
+  ansible.builtin.template:
+    src: start_server.sh
+    dest: "/home/{{ user }}/start_server.sh"
 
-# - name: Give running file permissions
-#   command: "chmod +x /home/{{ user }}/start_server.sh"
+- name: Give running file permissions
+  command: "chmod +x /home/{{ user }}/start_server.sh"
 
-# - name: Cleanup
-#   command: "rm /home/{{ user }}/kafka_2.13-3.9.0.tgz"
+- name: Cleanup
+  command: "rm /home/{{ user }}/kafka_2.13-3.9.0.tgz"
 
 - name: Get the current public IP address
   shell: |
@@ -50,3 +50,22 @@
     regexp: '^advertised.listeners=PLAINTEXT://CHANGE:9092'
     line: "advertised.listeners=PLAINTEXT://{{ public_ip.stdout }}:9092"
     backrefs: yes
+
+- name: Change the broker id
+  shell: |
+    private_ip=$(hostname -I | awk '{print $1}')
+
+    if [ "$private_ip" = "{{vm1_private_ip}}" ]; then 
+      echo "1"
+    else
+      echo "2"
+    fi
+  register: broker_id
+
+- name: Change config file
+  ansible.builtin.lineinfile:
+    path: "/home/{{ user }}/kafka/kafka_2.13-3.9.0/config/server.properties"
+    regexp: '^brocker.id=CHANGE'
+    line: "broker.id={{ broker_id.stdout }}"
+    backrefs: yes
+  
