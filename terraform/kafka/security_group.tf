@@ -2,7 +2,7 @@
 resource "aws_security_group" "zookeeper_kafka_sg" {
   name        = "zookeeper-kafka-sg"
   description = "Allow SSH inbound traffic"
-  vpc_id      = aws_vpc.main.id  
+  vpc_id      = var.vpc_id
 
   egress {
     from_port   = 0

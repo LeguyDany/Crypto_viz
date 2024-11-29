@@ -24,3 +24,9 @@ $KAFKA_PATH/bin/kafka-server-start.sh -daemon $KAFKA_PATH/config/server.properti
 echo "Checking kafka's status..."
 sleep 10
 $KAFKA_PATH/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+
+private_ip=$(hostname -I | awk '{print $1}')
+if [ "$private_ip" = "{{vm1_private_ip}}" ]; then 
+    echo "Creating a new kafka topic named {{ kafka_topic_name }}"
+    $KAFKA_PATH/bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic {{ kafka_topic_name }} --create --partitions 3 --replication-factor 2
+fi

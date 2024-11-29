@@ -51,10 +51,9 @@
     line: "advertised.listeners=PLAINTEXT://{{ public_ip.stdout }}:9092"
     backrefs: yes
 
-- name: Change the broker id
+- name: Get the broker id
   shell: |
     private_ip=$(hostname -I | awk '{print $1}')
-
     if [ "$private_ip" = "{{vm1_private_ip}}" ]; then 
       echo "1"
     else
@@ -63,9 +62,6 @@
   register: broker_id
 
 - name: Change config file
-  ansible.builtin.lineinfile:
-    path: "/home/{{ user }}/kafka/kafka_2.13-3.9.0/config/server.properties"
-    regexp: '^brocker.id=CHANGE'
-    line: "broker.id={{ broker_id.stdout }}"
-    backrefs: yes
+  shell: |
+    sed -i "24s/CHANGE/{{ broker_id.stdout }}/" /home/{{ user }}/kafka/kafka_2.13-3.9.0/config/server.properties
   
