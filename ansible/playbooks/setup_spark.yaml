@@ -1,0 +1,22 @@
+- name: Setup Spark consumer cluster
+  hosts: vm_spark_consumer1, vm_spark_consumer2, vm_spark_consumer3, vm_spark_producer1, vm_spark_producer2, vm_spark_producer3
+  become: yes
+  vars:
+    sudoer_name: "{{ user }}"
+    setup_path: "/home/{{ user }}"
+    vm1_consumer_private_ip: "10.0.2.245"
+    vm2_consumer_private_ip: "10.0.2.116"
+    vm3_consumer_private_ip: "10.0.2.206"
+    vm1_consumer_public_ip: "ec2-15-188-114-178.eu-west-3.compute.amazonaws.com"
+    vm2_consumer_public_ip: "ec2-15-188-180-82.eu-west-3.compute.amazonaws.com"
+    vm3_consumer_public_ip: "ec2-15-188-240-5.eu-west-3.compute.amazonaws.com"
+    vm1_producer_private_ip: "10.0.3.86"
+    vm2_producer_private_ip: "10.0.3.230"
+    vm3_producer_private_ip: "10.0.3.247"
+    vm1_producer_public_ip: "ec2-15-188-152-165.eu-west-3.compute.amazonaws.com"
+    vm2_producer_public_ip: "ec2-15-237-86-207.eu-west-3.compute.amazonaws.com"
+    vm3_producer_public_ip: "ec2-15-188-225-168.eu-west-3.compute.amazonaws.com"
+  vars_files:
+    - ../secrets.yaml
+  roles:
+    - ../roles/spark_generals
