@@ -1,5 +1,5 @@
 [vm_kafka1]
-"ec2-35-180-52-132.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-35-181-29-109.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
-[vm_kafk2]
-"ec2-13-39-71-157.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+[vm_kafka2]
+"ec2-13-39-198-36.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
