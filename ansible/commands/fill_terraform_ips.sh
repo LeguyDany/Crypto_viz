@@ -2,8 +2,8 @@
 
 cd ../../terraform
 
-elastic_ip_1=($(terraform output | grep instance_1 | awk '{print $3}'))
-elastic_ip_2=($(terraform output | grep instance_2 | awk '{print $3}'))
+elastic_ip_1=($(terraform output | grep instance_1_kafka | awk '{print $3}'))
+elastic_ip_2=($(terraform output | grep instance_2_kafka | awk '{print $3}'))
 
 cd ../ansible
 

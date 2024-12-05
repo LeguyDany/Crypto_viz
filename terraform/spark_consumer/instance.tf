@@ -36,12 +36,12 @@ resource "aws_eip" "spark_consumer_ip" {
 output "elastic_ip_spark_consumer" {
   value = {
     for idx in range(var.instance_count):
-      "instance_${idx + 1}" => aws_eip.spark_consumer_ip[idx].public_dns
+      "instance_${idx + 1}_spark_consumer" => aws_eip.spark_consumer_ip[idx].public_dns
   }
 }
 output "instance_private_ips_spark_consumer" {
   value = {
     for idx in range(var.instance_count):
-      "instance_${idx + 1}" => aws_eip.spark_consumer_ip[idx].private_ip
+      "instance_${idx + 1}_spark_consumer" => aws_eip.spark_consumer_ip[idx].private_ip
   }
 }

@@ -20,8 +20,14 @@ data "aws_ami" "debian" {
 }
 
 # Variables
-variable "instance_count" {
+variable "instance_count_kafka" {
   description = "Nombre d'instances à créer"
   type        = number
   default     = 2
 }
+variable "instance_count_spark" {
+  description = "Nombre d'instances à créer"
+  type        = number
+  default     = 3
+}
+
