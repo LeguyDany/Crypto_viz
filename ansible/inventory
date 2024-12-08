@@ -13,11 +13,11 @@
 [vm_spark_consumer3]
 "ec2-15-188-240-5.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
-[vm_spark_produdcer1]
+[vm_spark_producer1]
 "ec2-15-188-152-165.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
-[vm_spark_produdcer2]
+[vm_spark_producer2]
 "ec2-15-237-86-207.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
-[vm_spark_produdcer3]
+[vm_spark_producer3]
 "ec2-15-188-225-168.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
