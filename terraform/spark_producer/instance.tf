@@ -22,26 +22,26 @@ resource "aws_instance" "spark_producer" {
   }
 }
 
-# Elastic IP
-resource "aws_eip" "spark_producer_ip" {
-  count = var.instance_count
-  instance = aws_instance.spark_producer[count.index].id
+# # Elastic IP
+# resource "aws_eip" "spark_producer_ip" {
+#   count = var.instance_count
+#   instance = aws_instance.spark_producer[count.index].id
 
-  tags = {
-    Name = "spark-producer-eip-${count.index + 1}"
-  }
-}
+#   tags = {
+#     Name = "spark-producer-eip-${count.index + 1}"
+#   }
+# }
 
 # Outputs
-output "elastic_ip_spark_producer" {
+output "public_ip_spark_producer" {
   value = {
     for idx in range(var.instance_count):
-      "instance_${idx + 1}_spark_producer" => aws_eip.spark_producer_ip[idx].public_dns
+      "instance_${idx + 1}_spark_producer" => aws_instance.spark_producer[idx].public_dns
   }
 }
 output "instance_private_ips_spark_producer" {
   value = {
     for idx in range(var.instance_count):
-      "instance_${idx + 1}_spark_producer" => aws_eip.spark_producer_ip[idx].private_ip
+      "instance_${idx + 1}_spark_producer" => aws_instance.spark_producer[idx].private_ip
   }
 }

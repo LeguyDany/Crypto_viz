@@ -33,13 +33,13 @@ resource "aws_eip" "zookeeper_kafka_ip" {
 }
 
 # Outputs
-output "elastic_ip_kafka" {
+output "public_elastic_ips_kafka" {
   value = {
     for idx in range(var.instance_count):
       "instance_${idx + 1}_kafka" => aws_eip.zookeeper_kafka_ip[idx].public_dns
   }
 }
-output "instance_private_ips_kafka" {
+output "private_elastic_ips_kafka" {
   value = {
     for idx in range(var.instance_count):
       "instance_${idx + 1}_kafka" => aws_eip.zookeeper_kafka_ip[idx].private_ip

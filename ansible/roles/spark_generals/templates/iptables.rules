@@ -6,6 +6,7 @@
 # Allow SSH connections
 -A INPUT -p tcp --dport 22 -j ACCEPT
 
+# Allow traffic from the 10.0.CHANGE.0/24 subnet
 -4 -A INPUT -s 10.0.CHANGE.0/24 ! -i lo -j ACCEPT
 
 # Allow DNS, HTTP, HTTPS, Spark connections

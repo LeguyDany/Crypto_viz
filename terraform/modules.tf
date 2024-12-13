@@ -29,23 +29,23 @@ module "spark_producer" {
 
 # Outputs
 
-output "kafka_elastic_ips" {
-  value = module.kafka.elastic_ip_kafka
+output "kafka_elastic_public_ips" {
+  value = module.kafka.public_elastic_ips_kafka
 }
-output "kafka_private_ips" {
-  value = module.kafka.instance_private_ips_kafka
+output "kafka_elastic_private_ips" {
+  value = module.kafka.private_elastic_ips_kafka
 }
 
-output "spark_consumer_elastic_ips" {
-  value = module.spark_consumer.elastic_ip_spark_consumer
+output "spark_consumer_public_ips" {
+  value = module.spark_consumer.public_ip_spark_consumer
 }
 output "spark_consumer_private_ips" {
   value = module.spark_consumer.instance_private_ips_spark_consumer
 }
 
-output "spark_producer_elastic_ips" {
-  value = module.spark_producer.elastic_ip_spark_producer
+output "spark_producer_public_ips" {
+  value = module.spark_producer.public_ip_spark_producer
 }
-output "spark_producer_private_ips" {
+output "spark_producer_ips" {
   value = module.spark_producer.instance_private_ips_spark_producer
 }
