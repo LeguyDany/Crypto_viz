@@ -10,8 +10,8 @@
 -4 -A INPUT -s 10.0.CHANGE.0/24 ! -i lo -j ACCEPT
 
 # Allow DNS, HTTP, HTTPS, Spark connections
--A INPUT -p udp --match multiport --dports 53,80,443,8080 -j ACCEPT
--A INPUT -p tcp --match multiport --dports 53,80,443,8080 -j ACCEPT
+-A INPUT -p udp --match multiport --dports 53,80,443,7077,7080,7081 -j ACCEPT
+-A INPUT -p tcp --match multiport --dports 53,80,443,7077,7080,7081 -j ACCEPT
 
 # Allow ping
 -A INPUT -p icmp -j ACCEPT

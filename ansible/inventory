@@ -5,19 +5,19 @@
 "ec2-13-39-198-36.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_consumer1]
-"ec2-13-36-244-106.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-52-47-148-35.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_consumer2]
-"ec2-35-180-134-30.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-13-38-81-66.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_consumer3]
-"ec2-13-36-167-156.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-15-237-202-46.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_producer1]
-"ec2-35-180-23-214.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-15-188-75-161.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_producer2]
-"ec2-15-188-81-19.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-15-188-83-112.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
 
 [vm_spark_producer3]
-"ec2-13-39-234-164.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem
+"ec2-13-39-233-107.eu-west-3.compute.amazonaws.com" ansible_user=admin ansible_ssh_private_key_file=../../zookeeper-kafka-1.pem

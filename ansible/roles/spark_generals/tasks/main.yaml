@@ -1,33 +1,33 @@
-- name: Update
-  apt:
-    update_cache: yes
-    upgrade: yes
+# - name: Update
+#   apt:
+#     update_cache: yes
+#     upgrade: yes
 
-- name: Install sudo, unzip, curl, vim and git
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - unzip
-    - curl
-    - wget
-    - net-tools
-    - git
-    - vim
-    - tree
-    - lsof
-    - netcat-traditional
-    - telnet
-    - iptables
-    - iptables-persistent
-    - default-jdk
-    - scala
+# - name: Install sudo, unzip, curl, vim and git
+#   package:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - unzip
+#     - curl
+#     - wget
+#     - net-tools
+#     - git
+#     - vim
+#     - tree
+#     - lsof
+#     - netcat-traditional
+#     - telnet
+#     - iptables
+#     - iptables-persistent
+#     - default-jdk
+#     - scala
 
-- name: Create an iptable config file
-  ansible.builtin.template:
-    src: iptables.rules
-    dest: "/etc/iptables.rules"
-    # mode: "0755"
+# - name: Create an iptable config file
+#   ansible.builtin.template:
+#     src: iptables.rules
+#     dest: "/etc/iptables.rules"
+#     # mode: "0755"
 
 - name: Get current VM subnet
   shell: |
@@ -43,58 +43,109 @@
       /bin/bash
   register: subnet
 
-- name: Change the subnet in the iptable config file
-  ansible.builtin.lineinfile:
-    path: "/etc/iptables.rules"
-    regexp: '^-4 -A INPUT -s 10.0.CHANGE.0/24 ! -i lo -j ACCEPT'
-    line: "-4 -A INPUT -s 10.0.{{ subnet.stdout }}.0/24 ! -i lo -j ACCEPT"
-    backrefs: yes
+# - name: Change the subnet in the iptable config file
+#   ansible.builtin.lineinfile:
+#     path: "/etc/iptables.rules"
+#     regexp: '^-4 -A INPUT -s 10.0.CHANGE.0/24 ! -i lo -j ACCEPT'
+#     line: "-4 -A INPUT -s 10.0.{{ subnet.stdout }}.0/24 ! -i lo -j ACCEPT"
+#     backrefs: yes
   
-- name: Apply the iptables rules
-  ansible.builtin.shell: "iptables-restore < /etc/iptables.rules"
+# - name: Apply the iptables rules
+#   ansible.builtin.shell: "iptables-restore < /etc/iptables.rules"
 
-- name: Install prerequisites
-  apt:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - software-properties-common
-    - python3-pip
-    - python3-dev
-    - build-essential
-    - libssl-dev
-    - libffi-dev
-    - python3-setuptools
+# - name: Install prerequisites
+#   apt:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - software-properties-common
+#     - python3-pip
+#     - python3-dev
+#     - build-essential
+#     - libssl-dev
+#     - libffi-dev
+#     - python3-setuptools
 
-- name: Install Python
-  apt:
-    name: python3.11
-    state: present
-    update_cache: yes
+# - name: Install Python
+#   apt:
+#     name: python3.11
+#     state: present
+#     update_cache: yes
 
-- name: Download Spark
-  get_url:
-    url: "https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
-    dest: "/home/{{ user }}/spark-3.2.0-bin-hadoop3.5.3.tgz"
+# - name: Download Spark
+#   get_url:
+#     url: "https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
+#     dest: "/home/{{ user }}/spark-3.2.0-bin-hadoop3.5.3.tgz"
 
-- name: Create a spark folder
-  ansible.builtin.file:
-    path: "/home/{{ user }}/spark"
-    state: directory
+# - name: Create a spark folder
+#   ansible.builtin.file:
+#     path: "/home/{{ user }}/spark"
+#     state: directory
 
-- name: Install Spark
-  unarchive:
-    src: "/home/{{ user }}/spark-3.2.0-bin-hadoop3.5.3.tgz"
-    dest: "/home/{{ user }}/spark/"
-    remote_src: yes
+# - name: Install Spark
+#   unarchive:
+#     src: "/home/{{ user }}/spark-3.2.0-bin-hadoop3.5.3.tgz"
+#     dest: "/home/{{ user }}/spark/"
+#     remote_src: yes
 
-- name: setup bashrc file
-  command: |
-    echo "export SPARK_HOME=/home/admin/spark/spark-3.5.3-bin-hadoop3" >> /home/{{ user }}/.bashrc
-    echo "export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin" >> /home/{{ user }}/.bashrc
+# - name: Setup bashrc file
+#   command: |
+#     echo "export SPARK_HOME=/home/admin/spark/spark-3.5.3-bin-hadoop3" >> /home/{{ user }}/.bashrc
+#     echo "export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin" >> /home/{{ user }}/.bashrc
 
-# - name: Remove spark tar
-#   command: "rm -rf /home/{{ user }}/spark-3.2.0-bin-hadoop3.5.3.tgz"
+# - name: Replace the default spark-env.sh file
+#   ansible.builtin.template:
+#     src: spark-env.sh.master_template
+#     dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh"
+#     mode: "0755"
 
-# - name: Remove spark folder
-#   command: "rm -rf /home/{{ user }}/spark"
+# - name: Create the spark-defaults.conf file
+#   ansible.builtin.template:
+#     src: spark-defaults.conf.master_template
+#     dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf"
+#     mode: "0755"
+
+# - name: Update the spark-defaults.conf file and spark-env.sh file
+#   shell: |
+#     subnet="{{ subnet.stdout }}"
+#     if [ $subnet = "2" ]; then
+#       sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
+#       sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
+#     else
+#       sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
+#       sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
+#     fi
+#   args:
+#     executable: /bin/bash
+  
+# - name: Remove pre-existing worker file
+#   command: "rm -rf /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers"
+
+# - name: Update the workers file
+#   shell: |
+#     subnet="{{ subnet.stdout }}"
+#     vm2_consumer_private_ip="{{ vm2_consumer_private_ip }}"
+#     vm3_consumer_private_ip="{{ vm3_consumer_private_ip }}"
+    
+#     vm2_producer_private_ip="{{ vm2_producer_private_ip }}"
+#     vm3_producer_private_ip="{{ vm3_producer_private_ip }}"
+
+#     applyIps() {
+#       type=$1
+#       for i in 2 3; do
+#         vm="vm${i}_${type}_private_ip"
+#         ipValue=$(eval echo "\${$vm}")
+#         echo "${ipValue}" >> /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers
+#       done
+#     }
+
+#     if [ "$subnet" = "2" ]; then 
+#       applyIps consumer
+#     else
+#       applyIps producer
+#     fi
+#   args:
+#     executable: /bin/bash
+
+
+

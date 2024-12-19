@@ -1,0 +1,9 @@
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export SPARK_HOME=/home/admin/spark/spark-3.5.3-bin-hadoop3
+export SPARK_MASTER_HOST=CHANGE_ME
+
+export SPARK_MASTER_PORT=7077
+export SPARK_MASTER_WEBUI_PORT=7080
+export SPARK_WORKER_WEBUI_PORT=7081
+export SPARK_WORKER_MEMORY=2g
+export SPARK_WORKER_CORES=2
