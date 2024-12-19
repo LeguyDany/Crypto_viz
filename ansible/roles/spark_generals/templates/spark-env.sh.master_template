@@ -1,4 +1,4 @@
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export SPARK_HOME=/home/admin/spark/spark-3.5.3-bin-hadoop3
 export SPARK_MASTER_HOST=CHANGE_ME
 

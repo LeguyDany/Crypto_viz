@@ -1,0 +1,1 @@
+ssh -L 7080:localhost:7080 -i ../../zookeeper-kafka-1.pem admin@ec2-52-47-148-35.eu-west-3.compute.amazonaws.com

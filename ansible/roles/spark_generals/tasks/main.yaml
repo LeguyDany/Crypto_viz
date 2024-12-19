@@ -93,59 +93,59 @@
 #     echo "export SPARK_HOME=/home/admin/spark/spark-3.5.3-bin-hadoop3" >> /home/{{ user }}/.bashrc
 #     echo "export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin" >> /home/{{ user }}/.bashrc
 
-# - name: Replace the default spark-env.sh file
-#   ansible.builtin.template:
-#     src: spark-env.sh.master_template
-#     dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh"
-#     mode: "0755"
+- name: Replace the default spark-env.sh file
+  ansible.builtin.template:
+    src: spark-env.sh.master_template
+    dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh"
+    mode: "0755"
 
-# - name: Create the spark-defaults.conf file
-#   ansible.builtin.template:
-#     src: spark-defaults.conf.master_template
-#     dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf"
-#     mode: "0755"
+- name: Create the spark-defaults.conf file
+  ansible.builtin.template:
+    src: spark-defaults.conf.master_template
+    dest: "/home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf"
+    mode: "0755"
 
-# - name: Update the spark-defaults.conf file and spark-env.sh file
-#   shell: |
-#     subnet="{{ subnet.stdout }}"
-#     if [ $subnet = "2" ]; then
-#       sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
-#       sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
-#     else
-#       sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
-#       sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
-#     fi
-#   args:
-#     executable: /bin/bash
+- name: Update the spark-defaults.conf file and spark-env.sh file
+  shell: |
+    subnet="{{ subnet.stdout }}"
+    if [ $subnet = "2" ]; then
+      sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
+      sed -i 's/CHANGE_ME/{{vm1_consumer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
+    else
+      sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-defaults.conf
+      sed -i 's/CHANGE_ME/{{vm1_producer_private_ip}}/g' /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/spark-env.sh
+    fi
+  args:
+    executable: /bin/bash
   
-# - name: Remove pre-existing worker file
-#   command: "rm -rf /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers"
+- name: Remove pre-existing worker file
+  command: "rm -rf /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers"
 
-# - name: Update the workers file
-#   shell: |
-#     subnet="{{ subnet.stdout }}"
-#     vm2_consumer_private_ip="{{ vm2_consumer_private_ip }}"
-#     vm3_consumer_private_ip="{{ vm3_consumer_private_ip }}"
+- name: Update the workers file
+  shell: |
+    subnet="{{ subnet.stdout }}"
+    vm2_consumer_private_ip="{{ vm2_consumer_private_ip }}"
+    vm3_consumer_private_ip="{{ vm3_consumer_private_ip }}"
     
-#     vm2_producer_private_ip="{{ vm2_producer_private_ip }}"
-#     vm3_producer_private_ip="{{ vm3_producer_private_ip }}"
+    vm2_producer_private_ip="{{ vm2_producer_private_ip }}"
+    vm3_producer_private_ip="{{ vm3_producer_private_ip }}"
 
-#     applyIps() {
-#       type=$1
-#       for i in 2 3; do
-#         vm="vm${i}_${type}_private_ip"
-#         ipValue=$(eval echo "\${$vm}")
-#         echo "${ipValue}" >> /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers
-#       done
-#     }
+    applyIps() {
+      type=$1
+      for i in 2 3; do
+        vm="vm${i}_${type}_private_ip"
+        ipValue=$(eval echo "\${$vm}")
+        echo "${ipValue}" >> /home/{{ user }}/spark/spark-3.5.3-bin-hadoop3/conf/workers
+      done
+    }
 
-#     if [ "$subnet" = "2" ]; then 
-#       applyIps consumer
-#     else
-#       applyIps producer
-#     fi
-#   args:
-#     executable: /bin/bash
+    if [ "$subnet" = "2" ]; then 
+      applyIps consumer
+    else
+      applyIps producer
+    fi
+  args:
+    executable: /bin/bash
 
 
 

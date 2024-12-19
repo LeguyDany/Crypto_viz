@@ -28,6 +28,31 @@ resource "aws_security_group" "spark_producer_sg" {
     cidr_blocks = ["0.0.0.0/0"]  
   }
 
+  # === Spark ===
+  # Master port
+  ingress { 
+    from_port   = 7077 
+    to_port     = 7077
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  
+  }
+  # Web UI master port
+  ingress {
+    from_port   = 7080
+    to_port     = 7080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  # Web UI worker port
+  ingress {
+    from_port   = 7081
+    to_port     = 7081
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+
   tags = {
     Name = "spark-producer-sg"
   }

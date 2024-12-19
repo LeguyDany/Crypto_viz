@@ -36,13 +36,6 @@ resource "aws_security_group" "spark_consumer_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  
   }
-  # Worker port
-  ingress {
-    from_port   = 7080
-    to_port     = 7080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  } 
   # Web UI master port
   ingress {
     from_port   = 7080
